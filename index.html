@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Genesis Mirrors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Noto+Serif+Hebrew:wght@400;600&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one scroll under a sticky language bar. Flood first (arc diagram, rainbow arcs), then Babel (ziggurat: left = the builders' mudbrick, right = glazed lapis for God's answer, gold = the turn). */
+  :root {
+    --bg: #eef0f5;
+    --surface: #f8f9fc;
+    --ink: #141c38;
+    --muted: #56607c;
+    --line: #cdd3e0;
+    --clay: #d4b27c;
+    --clay-ink: #3a2911;
+    --glaze: #2c4c9e;
+    --glaze-ink: #f3f5fb;
+    --gold: #c9951c;
+    --hl: rgba(214, 163, 40, 0.34);
+    --arc-l: 46%;
+    --display: "Gloock", "Iowan Old Style", Georgia, serif;
+    --body: "Literata", Georgia, "Times New Roman", serif;
+    --mono: "Spline Sans Mono", ui-monospace, Menlo, Consolas, monospace;
+    --hebrew: "Noto Serif Hebrew", "SBL Hebrew", "Times New Roman", serif;
+    --bar-h: 58px;
+    scroll-padding-top: calc(var(--bar-h) + 12px + env(safe-area-inset-top, 0px));
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1430;
+      --surface: #151e42;
+      --ink: #e8ebf5;
+      --muted: #9ba4c2;
+      --line: #2b3768;
+      --clay: #b8935c;
+      --clay-ink: #22170a;
+      --glaze: #4d72d4;
+      --glaze-ink: #f5f7fd;
+      --gold: #e3b84a;
+      --hl: rgba(227, 184, 74, 0.32);
+      --arc-l: 66%;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1430;
+    --surface: #151e42;
+    --ink: #e8ebf5;
+    --muted: #9ba4c2;
+    --line: #2b3768;
+    --clay: #b8935c;
+    --clay-ink: #22170a;
+    --glaze: #4d72d4;
+    --glaze-ink: #f5f7fd;
+    --gold: #e3b84a;
+    --hl: rgba(227, 184, 74, 0.32);
+    --arc-l: 66%;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 30;
+    background: var(--bg);
+  }
+  html:not([lang="es"]) [data-lang="es"], html[lang="es"] [data-lang="en"] { display: none; }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  section { border-top: 1px solid var(--line); }
+  section > .wrap { padding-block: clamp(48px, 8vw, 96px); }
+  .hero > .wrap { padding-block: clamp(32px, 6vw, 72px) clamp(40px, 7vw, 80px); }
+
+  /* ---------- Language bar ---------- */
+  .topbar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: var(--bar-h); }
+  .brand {
+    min-width: 0;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lang { display: inline-flex; flex: none; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .lang button {
+    min-width: 44px;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .lang button:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(2.6rem, 8vw, 5rem); line-height: 1.02; margin-block: 0.2em 0.3em; }
+  h2 { font-size: clamp(1.8rem, 4.2vw, 2.6rem); line-height: 1.1; margin-block: 0.25em 0.4em; }
+  h3 { font-size: 1.35rem; line-height: 1.2; }
+  p { margin: 0; }
+  .lede { max-width: 62ch; font-size: 1.15rem; }
+  .intro { max-width: 64ch; }
+
+  .he { font-family: var(--hebrew); direction: rtl; unicode-bidi: isolate; }
+  .tr { font-style: italic; color: var(--muted); }
+
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0 16px;
+  }
+  .jump a:hover { border-color: var(--ink); }
+  .jump a:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  .btn {
+    min-height: 44px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--bg);
+    border: 0;
+    border-radius: 999px;
+    padding: 0 20px;
+    cursor: pointer;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .caption { color: var(--muted); font-size: 0.98rem; min-width: 0; flex: 1 1 240px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 22px clamp(16px, 3vw, 26px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  /* ---------- Flood ---------- */
+  .equation { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px 22px; margin-top: 30px; }
+  .eq-part { display: flex; flex-direction: column; gap: 8px; max-width: 13rem; }
+  .eq-num {
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    line-height: 1;
+    padding-bottom: 8px;
+    border-bottom: 6px solid var(--line);
+    font-variant-numeric: tabular-nums;
+  }
+  .eq-part.h .eq-num { border-color: var(--clay); }
+  .eq-part.a .eq-num { border-color: var(--gold); }
+  .eq-part.d .eq-num { border-color: var(--glaze); }
+  .eq-part.sum .eq-num { border-color: var(--ink); }
+  .eq-op { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.25; color: var(--muted); }
+  .eq-lbl { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+
+  .arcwrap { overflow-x: auto; margin-top: 30px; -webkit-overflow-scrolling: touch; }
+  .arcwrap svg { display: block; width: 100%; min-width: 680px; height: auto; }
+  .scroll-hint { display: none; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+  .cellh { fill: var(--clay); }
+  .cella { fill: var(--gold); }
+  .celld { fill: var(--glaze); }
+  .arc { fill: none; stroke: hsl(var(--h) 62% var(--arc-l)); stroke-width: 2.5; stroke-linecap: round; transition: opacity 0.25s ease, stroke-width 0.25s ease; }
+  .arc-hit { fill: none; stroke: transparent; stroke-width: 16; cursor: pointer; pointer-events: stroke; }
+  .segbar { fill: hsl(var(--h) 62% var(--arc-l)); transition: opacity 0.25s ease; }
+  .flood-svg.has-active .arc:not(.on), .flood-svg.has-active .segbar:not(.on) { opacity: 0.14; }
+  .arc.on { stroke-width: 4.5; }
+  .svg-lbl { font-family: var(--mono); font-size: 12px; fill: var(--muted); }
+  .svg-lbl.strong { fill: var(--ink); font-weight: 500; }
+  .bracket { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+
+  .pairs { display: flex; flex-direction: column; margin-top: 26px; border-bottom: 1px solid var(--line); }
+  .prow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    width: 100%;
+    padding: 12px 6px;
+    border: 0;
+    border-top: 1px solid var(--line);
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .prow:hover, .prow[aria-pressed="true"] { background: var(--surface); }
+  .prow:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+  .prow .pl { text-align: right; }
+  .seg-t { display: block; font-size: 0.98rem; line-height: 1.3; }
+  .seg-r { display: block; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+  .pill {
+    justify-self: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    border: 3px solid hsl(var(--h) 62% var(--arc-l));
+  }
+  .prow.centre { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 6px; cursor: default; }
+  .prow.centre:hover { background: none; }
+  .prow.centre .pill { background: var(--gold); border-color: var(--gold); color: var(--clay-ink); }
+  .prow.centre .he { font-size: 1.4rem; }
+
+  .sub { margin-top: 44px; }
+  .days { overflow-x: auto; margin-top: 18px; }
+  .days ol { list-style: none; margin: 0 auto; padding: 0 0 4px; display: flex; gap: 6px; width: max-content; }
+  .day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 3.3rem;
+    padding: 10px 8px 8px;
+    border-radius: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  .day b { font-family: var(--display); font-weight: 400; font-size: 1.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .day small { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
+  .day.h { border-bottom: 4px solid var(--clay); }
+  .day.d { border-bottom: 4px solid var(--glaze); }
+  .day.a { background: var(--gold); border-color: var(--gold); color: var(--clay-ink); }
+  .day.a small { color: var(--clay-ink); }
+  .flood-notes { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 36px; }
+
+  /* ---------- Ziggurat ---------- */
+  .zig-shell { max-width: 840px; margin: 40px auto 0; }
+  .zig {
+    --step: 7%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 26px;
+  }
+  .zig::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: -8px;
+    left: 50%;
+    border-left: 1.5px dashed var(--muted);
+    opacity: 0.6;
+  }
+  .heaven {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(10px, -4px);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .tier {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    width: calc(100% - (5 - var(--i)) * var(--step));
+  }
+  .tier.apex-tier { grid-template-columns: 1fr; width: calc(100% - 6.6 * var(--step)); }
+  .brick {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    min-height: 66px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 3px;
+    font: inherit;
+    cursor: pointer;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 45%);
+    transition: opacity 0.35s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .brick.h { background-color: var(--clay); color: var(--clay-ink); align-items: flex-end; text-align: right; }
+  .brick.d { background-color: var(--glaze); color: var(--glaze-ink); align-items: flex-start; text-align: left; }
+  .brick.apex { background-color: var(--gold); color: var(--clay-ink); align-items: center; text-align: center; min-height: 74px; }
+  .brick .tag { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; opacity: 0.85; }
+  .brick .lbl { font-size: 0.98rem; line-height: 1.25; }
+  .brick.apex .lbl { font-family: var(--display); font-size: 1.3rem; }
+  .brick:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .brick[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--gold); }
+  .zig.playing .brick { opacity: 0.16; }
+  .zig.playing .brick.lit { opacity: 1; }
+  @media (hover: hover) {
+    .brick:hover { transform: translateY(-2px); }
+  }
+
+  .zig-legend {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .zig-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .zig-legend span:last-child { text-align: right; }
+  .sw { width: 12px; height: 12px; border-radius: 2px; flex: none; }
+  .sw.h { background: var(--clay); }
+  .sw.d { background: var(--glaze); }
+  .sw.a { background: var(--gold); }
+
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 28px; }
+
+  .detail {
+    margin-top: 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 22px clamp(16px, 3vw, 28px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .pair.single { grid-template-columns: 1fr; }
+  .half { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .who {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .half .he { font-size: 1.65rem; line-height: 1.5; text-align: right; }
+  .half .tx { font-size: 1.05rem; }
+  .detail .note { max-width: 70ch; border-top: 1px solid var(--line); padding-top: 16px; }
+
+  /* ---------- Keyword grid ---------- */
+  .kgrid { overflow-x: auto; margin-top: 28px; -webkit-overflow-scrolling: touch; }
+  .kgrid table { border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 100%; }
+  .kgrid th, .kgrid td { padding: 0; text-align: center; }
+  .kgrid thead th { font-family: var(--mono); font-size: 0.7rem; font-weight: 400; color: var(--muted); padding: 0 4px 8px; }
+  .kgrid thead th.half-label { text-align: left; letter-spacing: 0.08em; text-transform: uppercase; }
+  .kgrid tbody tr { border-top: 1px solid var(--line); }
+  .kgrid tbody tr.on { background: var(--hl); }
+  .krow {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 10px 8px 6px;
+    background: none;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .krow:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+  .krow .he { font-size: 1.15rem; min-width: 5.2em; text-align: right; }
+  .krow .kt { font-style: italic; }
+  .krow .ke { color: var(--muted); font-size: 0.85rem; }
+  .cell { width: 34px; height: 44px; }
+  .cell.turn, .kgrid thead th.turn { border-left: 2px solid var(--gold); }
+  .dots { display: inline-flex; gap: 3px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .cell.h .dot { background: var(--clay); }
+  .cell.d .dot { background: var(--glaze); }
+  .total { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); padding: 0 8px !important; }
+
+  /* ---------- Verses ---------- */
+  .verses { margin-top: 36px; display: flex; flex-direction: column; }
+  .verse {
+    display: grid;
+    grid-template-columns: 2.6rem minmax(0, 1fr) minmax(0, 1fr);
+    gap: 6px 28px;
+    padding-block: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .verse .n {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 0.25em;
+  }
+  .verse .n::before { content: ""; width: 10px; height: 10px; border-radius: 2px; }
+  .verse.h .n::before { background: var(--clay); }
+  .verse.d .n::before { background: var(--glaze); }
+  .verse .he { font-size: 1.38rem; line-height: 1.75; text-align: right; }
+  .turn-marker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-block: 10px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-align: center;
+  }
+  .turn-marker::before, .turn-marker::after { content: ""; flex: 1; border-top: 2px solid var(--gold); }
+  .kw { border-radius: 3px; cursor: pointer; transition: background-color 0.2s ease, box-shadow 0.2s ease; }
+  .kw.on { background: var(--hl); box-shadow: 0 0 0 2px var(--hl); }
+
+  /* ---------- Sounds ---------- */
+  .cards { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 28px; }
+  .wordlist { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .wordlist li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 12px; align-items: baseline; }
+  .wordlist .he { font-size: 1.6rem; text-align: right; }
+  .wordlist .gloss { font-size: 0.98rem; }
+  .wordlist .gloss small { display: block; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.04em; }
+
+  .letters { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 20px; align-items: center; }
+  .tiles {
+    --t: 76px;
+    --g: 14px;
+    position: relative;
+    width: calc(3 * var(--t) + 2 * var(--g));
+    height: var(--t);
+  }
+  .tile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--t);
+    height: var(--t);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--clay);
+    color: var(--clay-ink);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 45%);
+    transform: translate(calc((2 - var(--pos)) * (var(--t) + var(--g))), 0);
+    transition: transform 0.9s cubic-bezier(0.6, 0, 0.2, 1), background-color 0.9s ease, color 0.9s ease;
+  }
+  .tile .hl { font-family: var(--hebrew); font-size: 2.3rem; line-height: 1; }
+  .tile .ll { font-family: var(--mono); font-size: 0.7rem; margin-top: 6px; opacity: 0.8; }
+  .letters.rev .tile { background-color: var(--glaze); color: var(--glaze-ink); }
+  .lword { display: flex; flex-direction: column; gap: 2px; transition: opacity 0.4s ease; min-width: 0; }
+  .lword .he { font-size: 1.7rem; }
+  .lword.right { text-align: right; align-items: flex-end; }
+  .letters:not(.rev) .lword.navlah, .letters.rev .lword.nilbenah { opacity: 0.4; }
+  .card-foot { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; }
+
+  /* ---------- Echoes ---------- */
+  .echoes { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 28px; }
+  .quote { display: flex; flex-direction: column; gap: 4px; }
+  .quote .ref { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .quote .he { font-size: 1.4rem; line-height: 1.6; }
+  .quote .tx { font-size: 1.02rem; }
+  .arrow { font-family: var(--mono); color: var(--muted); font-size: 0.85rem; }
+  mark { background: var(--hl); color: inherit; border-radius: 3px; padding: 0 2px; }
+  .same { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
+  /* ---------- Parallel table ---------- */
+  .table-wrap { overflow-x: auto; margin-top: 28px; }
+  .ptable { border-collapse: collapse; width: 100%; }
+  .ptable th, .ptable td { text-align: left; padding: 12px 14px; border-top: 1px solid var(--line); vertical-align: top; width: 50%; }
+  .ptable thead th { font-family: var(--mono); font-size: 0.72rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-top: 0; }
+  .ptable td .r { display: block; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  .ptable td:first-child { border-left: 4px solid var(--clay); }
+  .ptable td:last-child { border-left: 4px solid var(--glaze); }
+
+  footer { border-top: 1px solid var(--line); }
+  footer .wrap { padding-block: 32px 48px; color: var(--muted); font-size: 0.92rem; display: flex; flex-direction: column; gap: 8px; }
+  footer p { max-width: 78ch; }
+
+  @media (min-width: 860px) {
+    .cards { grid-template-columns: repeat(3, 1fr); }
+    .card.wide { grid-column: span 3; }
+    .echoes { grid-template-columns: 1fr 1fr; }
+    .flood-notes { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    body { font-size: 1rem; }
+    .zig { --step: 3.2%; }
+    .brick { padding: 9px 10px; min-height: 60px; }
+    .brick .lbl { font-size: 0.86rem; }
+    .brick.apex .lbl { font-size: 1.1rem; }
+    .zig-legend { font-size: 0.66rem; }
+    .pair { grid-template-columns: 1fr; }
+    .verse { grid-template-columns: 2rem minmax(0, 1fr); gap: 6px 14px; }
+    .verse .he { grid-column: 2; }
+    .letters { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .lword, .lword.right { align-items: center; text-align: center; }
+    .tiles { --t: 64px; --g: 12px; }
+    .prow { grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr); gap: 8px; padding-inline: 2px; }
+    .seg-t { font-size: 0.86rem; }
+    .pill { width: 2.1rem; height: 2.1rem; }
+    .scroll-hint { display: block; }
+    .equation { gap: 10px 14px; }
+    .eq-part { max-width: 9.5rem; }
+    .ptable th, .ptable td { padding: 10px 10px; font-size: 0.92rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brick, .tile, .lword, .kw, .arc, .segbar { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" data-i18n="brand">Genesis Mirrors</a>
+    <div class="lang" role="group" aria-label="Language / Idioma">
+      <button type="button" id="langEn" lang="en" aria-pressed="true">English</button>
+      <button type="button" id="langEs" lang="es" aria-pressed="false">Español</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="hero.eyebrow">Chiasms in Genesis</p>
+    <h1 data-i18n="hero.h1">Genesis Mirrors</h1>
+    <p class="lede" data-i18n="hero.lede">Two stories in Genesis are built like mirrors. The second half retells the first in reverse order, and the turning point sits at the exact centre. In both stories, that centre is God acting.</p>
+    <nav class="jump" aria-label="Stories on this page" data-i18n-aria="nav.aria">
+      <a href="#flood" data-i18n="nav.flood">The Flood · Genesis 6–9</a>
+      <a href="#babel" data-i18n="nav.babel">The Tower of Babel · Genesis 11</a>
+    </nav>
+  </div>
+</header>
+
+<section id="flood">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="flood.eyebrow">Genesis 6:9–9:17 · 77 verses</p>
+    <h2 data-i18n="flood.h2">The Flood</h2>
+    <p class="intro" data-i18n="flood.intro">The flood story runs from its heading, “These are the generations of Noah” (6:9), to the end of God's covenant speech (9:17). Count the verses and the turning point, “God remembered Noah” (8:1), lands exactly in the middle.</p>
+
+    <div class="equation" role="img" aria-label="38 verses, plus 1, plus 38 verses, makes 77 verses" data-i18n-aria="eq.aria">
+      <div class="eq-part h"><span class="eq-num">38</span><span class="eq-lbl" data-i18n="eq.l">verses · 6:9–7:24 · the waters rise</span></div>
+      <span class="eq-op" aria-hidden="true">+</span>
+      <div class="eq-part a"><span class="eq-num">1</span><span class="eq-lbl" data-i18n="eq.c">8:1 · God remembered Noah</span></div>
+      <span class="eq-op" aria-hidden="true">+</span>
+      <div class="eq-part d"><span class="eq-num">38</span><span class="eq-lbl" data-i18n="eq.r">verses · 8:2–9:17 · the waters recede</span></div>
+      <span class="eq-op" aria-hidden="true">=</span>
+      <div class="eq-part sum"><span class="eq-num">77</span><span class="eq-lbl" data-i18n="eq.sum">verses in all</span></div>
+    </div>
+
+    <div class="arcwrap">
+      <svg id="floodSvg" class="flood-svg" viewBox="0 0 800 372" role="img" aria-label="Arc diagram of Genesis 6:9 to 9:17. 77 squares, one per verse: 38 before 8:1 and 38 after it. Eight arcs join the scenes that mirror each other." data-i18n-aria="svg.aria"></svg>
+    </div>
+    <p class="scroll-hint" data-i18n="flood.hint">← Swipe the diagram sideways →</p>
+    <p class="caption" data-i18n="flood.caption">Each square is one verse. The arcs join the scenes that mirror each other, nested like the rainbow that closes the story. Pick a pair to trace it.</p>
+    <div class="pairs" id="floodPairs"></div>
+
+    <h3 class="sub" data-i18n="flood.sub">The numbers mirror too</h3>
+    <p class="intro" data-i18n="flood.subintro">The day counts on the way up come back in reverse order on the way down.</p>
+    <div class="days">
+      <ol>
+        <li class="day h"><b>7</b><small>7:4</small></li>
+        <li class="day h"><b>7</b><small>7:10</small></li>
+        <li class="day h"><b>40</b><small>7:17</small></li>
+        <li class="day h"><b>150</b><small>7:24</small></li>
+        <li class="day a"><b>★</b><small>8:1</small></li>
+        <li class="day d"><b>150</b><small>8:3</small></li>
+        <li class="day d"><b>40</b><small>8:6</small></li>
+        <li class="day d"><b>7</b><small>8:10</small></li>
+        <li class="day d"><b>7</b><small>8:12</small></li>
+      </ol>
+    </div>
+
+    <div class="flood-notes">
+      <article class="card">
+        <h3 data-i18n="note1.h">The centre</h3>
+        <p data-i18n="note1.p">In Hebrew, “remember” means to act on someone's behalf. Right after 8:1 a wind passes over the earth and the waters begin to fall, an echo of the spirit over the waters in Genesis 1:2. Before this verse the world is being undone. After it, creation starts again: dry land, birds and animals, and the blessing “be fruitful and multiply” (9:1).</p>
+      </article>
+      <article class="card">
+        <h3 data-i18n="note2.h">How exact is the count?</h3>
+        <p data-i18n="note2.p">The verse divisions come from the Masoretes, the scribes who fixed the Hebrew text, and the numbers were added in the Middle Ages. So the 38 + 1 + 38 split may reflect how the text was divided rather than the original author. The scenes mirror each other either way. Wenham's own outline is framed by Noah's sons (6:10 and 9:18–19), a little wider than this count, and the scene boundaries here are simplified to fit the 77 verses. Genesis already knows the number: Lamech boasts of vengeance “seventy-sevenfold” (4:24).</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="babel">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="babel.eyebrow">Genesis 11:1–9 · a chiasm in nine verses</p>
+    <h2 data-i18n="babel.h2">The Tower of Babel</h2>
+    <p class="lede" data-i18n="babel.lede">The Tower of Babel story is built like a mirror. The first half is the builders' plan, step by step. The second half takes it apart in reverse order. At the exact centre, the LORD comes down. Tap a brick to compare both halves of a pair, or play the story to watch it rise and come apart.</p>
+
+    <div class="zig-shell">
+      <div class="zig" id="zig" aria-label="The story as a ziggurat: the builders' half on the left, God's half on the right" data-i18n-aria="zig.aria">
+        <span class="heaven" id="heaven" data-i18n="zig.heaven">the heavens</span>
+      </div>
+      <div class="zig-legend">
+        <span><i class="sw h"></i><span data-i18n="legend.l">vv. 1–4 · the builders go up</span></span>
+        <span><span data-i18n="legend.r">vv. 5–9 · God undoes it</span><i class="sw d"></i></span>
+      </div>
+      <div class="controls">
+        <button class="btn" id="play" type="button" data-i18n="play">Play the story</button>
+        <p class="caption" id="caption" aria-live="polite" data-i18n="caption">Read up the left side, then down the right.</p>
+      </div>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="text.eyebrow">Babel · the text</p>
+    <h2 data-i18n="text.h2">Read it in the mirror</h2>
+    <p class="intro" data-i18n="text.intro">Nine verses in Hebrew and English. A handful of words keep coming back, and they land in matching places on either side of the centre. Pick a word to light it up in both languages.</p>
+
+    <div class="kgrid">
+      <table id="kgrid">
+        <thead>
+          <tr>
+            <th class="half-label" scope="col" data-i18n="grid.key">Key word</th>
+            <th scope="col">v1</th><th scope="col">v2</th><th scope="col">v3</th><th scope="col">v4</th>
+            <th scope="col" class="turn">v5</th><th scope="col">v6</th><th scope="col">v7</th><th scope="col">v8</th><th scope="col">v9</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="verses" id="verses">
+      <div class="verse h" id="v1">
+        <span class="n">v.1</span>
+        <p data-lang="en" lang="en">Now <span class="kw" data-k="kol">the whole earth</span> had one <span class="kw" data-k="safah">language</span> and the same words.</p>
+        <p data-lang="es" lang="es"><span class="kw" data-k="kol">Toda la tierra</span> tenía una sola <span class="kw" data-k="safah">lengua</span> y las mismas palabras.</p>
+        <p class="he" lang="he">וַיְהִי <span class="kw" data-k="kol">כָל־הָאָרֶץ</span> <span class="kw" data-k="safah">שָׂפָה</span> אֶחָת וּדְבָרִים אֲחָדִים׃</p>
+      </div>
+      <div class="verse h" id="v2">
+        <span class="n">v.2</span>
+        <p data-lang="en" lang="en">As they journeyed from the east, they found a plain in the land of Shinar and settled <span class="kw" data-k="sham">there</span>.</p>
+        <p data-lang="es" lang="es">Al viajar desde el oriente, hallaron una llanura en la tierra de Sinar y se establecieron <span class="kw" data-k="sham">allí</span>.</p>
+        <p class="he" lang="he">וַיְהִי בְּנָסְעָם מִקֶּדֶם וַיִּמְצְאוּ בִקְעָה בְּאֶרֶץ שִׁנְעָר וַיֵּשְׁבוּ <span class="kw" data-k="sham">שָׁם</span>׃</p>
+      </div>
+      <div class="verse h" id="v3">
+        <span class="n">v.3</span>
+        <p data-lang="en" lang="en">They said to one another, “<span class="kw" data-k="havah">Come, let us</span> make bricks and fire them thoroughly.” They had brick for stone, and bitumen for mortar.</p>
+        <p data-lang="es" lang="es">Y se dijeron unos a otros: «<span class="kw" data-k="havah">Vamos</span>, hagamos ladrillos y cozámoslos bien». Usaron ladrillo en lugar de piedra, y betún en lugar de argamasa.</p>
+        <p class="he" lang="he">וַיֹּאמְרוּ אִישׁ אֶל־רֵעֵהוּ <span class="kw" data-k="havah">הָבָה</span> נִלְבְּנָה לְבֵנִים וְנִשְׂרְפָה לִשְׂרֵפָה וַתְּהִי לָהֶם הַלְּבֵנָה לְאָבֶן וְהַחֵמָר הָיָה לָהֶם לַחֹמֶר׃</p>
+      </div>
+      <div class="verse h" id="v4">
+        <span class="n">v.4</span>
+        <p data-lang="en" lang="en">Then they said, “<span class="kw" data-k="havah">Come, let us</span> <span class="kw" data-k="banah">build</span> ourselves a <span class="kw" data-k="ir">city</span> and a tower with its top in the heavens, and let us make a <span class="kw" data-k="shem">name</span> for ourselves, lest we be <span class="kw" data-k="puts">scattered</span> over the face of <span class="kw" data-k="kol">the whole earth</span>.”</p>
+        <p data-lang="es" lang="es">Luego dijeron: «<span class="kw" data-k="havah">Vamos</span>, <span class="kw" data-k="banah">edifiquémonos</span> una <span class="kw" data-k="ir">ciudad</span> y una torre cuya cúspide llegue a los cielos, y hagámonos un <span class="kw" data-k="shem">nombre</span>, no sea que seamos <span class="kw" data-k="puts">dispersados</span> sobre la faz de <span class="kw" data-k="kol">toda la tierra</span>».</p>
+        <p class="he" lang="he">וַיֹּאמְרוּ <span class="kw" data-k="havah">הָבָה</span> <span class="kw" data-k="banah">נִבְנֶה</span>־לָּנוּ <span class="kw" data-k="ir">עִיר</span> וּמִגְדָּל וְרֹאשׁוֹ בַשָּׁמַיִם וְנַעֲשֶׂה־לָּנוּ <span class="kw" data-k="shem">שֵׁם</span> פֶּן־<span class="kw" data-k="puts">נָפוּץ</span> עַל־פְּנֵי <span class="kw" data-k="kol">כָל־הָאָרֶץ</span>׃</p>
+      </div>
+      <div class="turn-marker" data-i18n="turn">The turn · God's half begins</div>
+      <div class="verse d" id="v5">
+        <span class="n">v.5</span>
+        <p data-lang="en" lang="en">The LORD <span class="kw" data-k="yarad">came down</span> to see the <span class="kw" data-k="ir">city</span> and the tower that the children of man had <span class="kw" data-k="banah">built</span>.</p>
+        <p data-lang="es" lang="es">Y el SEÑOR <span class="kw" data-k="yarad">descendió</span> para ver la <span class="kw" data-k="ir">ciudad</span> y la torre que habían <span class="kw" data-k="banah">edificado</span> los hijos de los hombres.</p>
+        <p class="he" lang="he"><span class="kw" data-k="yarad">וַיֵּרֶד</span> יְהוָה לִרְאֹת אֶת־<span class="kw" data-k="ir">הָעִיר</span> וְאֶת־הַמִּגְדָּל אֲשֶׁר <span class="kw" data-k="banah">בָּנוּ</span> בְּנֵי הָאָדָם׃</p>
+      </div>
+      <div class="verse d" id="v6">
+        <span class="n">v.6</span>
+        <p data-lang="en" lang="en">And the LORD said, “Look, they are one people with one <span class="kw" data-k="safah">language</span>, all of them, and this is only the beginning of what they will do. Now nothing they plan to do will be out of reach for them.</p>
+        <p data-lang="es" lang="es">Y dijo el SEÑOR: «Miren, son un solo pueblo y todos tienen una sola <span class="kw" data-k="safah">lengua</span>, y esto es solo el comienzo de lo que harán. Ahora nada de lo que se propongan les será imposible.</p>
+        <p class="he" lang="he">וַיֹּאמֶר יְהוָה הֵן עַם אֶחָד <span class="kw" data-k="safah">וְשָׂפָה</span> אַחַת לְכֻלָּם וְזֶה הַחִלָּם לַעֲשׂוֹת וְעַתָּה לֹא־יִבָּצֵר מֵהֶם כֹּל אֲשֶׁר יָזְמוּ לַעֲשׂוֹת׃</p>
+      </div>
+      <div class="verse d" id="v7">
+        <span class="n">v.7</span>
+        <p data-lang="en" lang="en"><span class="kw" data-k="havah">Come, let us</span> <span class="kw" data-k="yarad">go down</span> and confuse their <span class="kw" data-k="safah">language</span> <span class="kw" data-k="sham">there</span>, so that they will not understand one another's <span class="kw" data-k="safah">language</span>.”</p>
+        <p data-lang="es" lang="es"><span class="kw" data-k="havah">Vamos</span>, <span class="kw" data-k="yarad">descendamos</span> y confundamos <span class="kw" data-k="sham">allí</span> su <span class="kw" data-k="safah">lengua</span>, para que ninguno entienda la <span class="kw" data-k="safah">lengua</span> de su compañero».</p>
+        <p class="he" lang="he"><span class="kw" data-k="havah">הָבָה</span> <span class="kw" data-k="yarad">נֵרְדָה</span> וְנָבְלָה <span class="kw" data-k="sham">שָׁם</span> <span class="kw" data-k="safah">שְׂפָתָם</span> אֲשֶׁר לֹא יִשְׁמְעוּ אִישׁ <span class="kw" data-k="safah">שְׂפַת</span> רֵעֵהוּ׃</p>
+      </div>
+      <div class="verse d" id="v8">
+        <span class="n">v.8</span>
+        <p data-lang="en" lang="en">So the LORD <span class="kw" data-k="puts">scattered</span> them <span class="kw" data-k="sham">from there</span> over the face of <span class="kw" data-k="kol">the whole earth</span>, and they stopped <span class="kw" data-k="banah">building</span> the <span class="kw" data-k="ir">city</span>.</p>
+        <p data-lang="es" lang="es">Así el SEÑOR los <span class="kw" data-k="puts">dispersó</span> <span class="kw" data-k="sham">desde allí</span> sobre la faz de <span class="kw" data-k="kol">toda la tierra</span>, y dejaron de <span class="kw" data-k="banah">edificar</span> la <span class="kw" data-k="ir">ciudad</span>.</p>
+        <p class="he" lang="he"><span class="kw" data-k="puts">וַיָּפֶץ</span> יְהוָה אֹתָם <span class="kw" data-k="sham">מִשָּׁם</span> עַל־פְּנֵי <span class="kw" data-k="kol">כָל־הָאָרֶץ</span> וַיַּחְדְּלוּ <span class="kw" data-k="banah">לִבְנֹת</span> <span class="kw" data-k="ir">הָעִיר</span>׃</p>
+      </div>
+      <div class="verse d" id="v9">
+        <span class="n">v.9</span>
+        <p data-lang="en" lang="en">Therefore its <span class="kw" data-k="shem">name</span> was called Babel, because <span class="kw" data-k="sham">there</span> the LORD confused the <span class="kw" data-k="safah">language</span> of <span class="kw" data-k="kol">the whole earth</span>, and <span class="kw" data-k="sham">from there</span> the LORD <span class="kw" data-k="puts">scattered</span> them over the face of <span class="kw" data-k="kol">the whole earth</span>.</p>
+        <p data-lang="es" lang="es">Por eso le pusieron por <span class="kw" data-k="shem">nombre</span> Babel, porque <span class="kw" data-k="sham">allí</span> confundió el SEÑOR la <span class="kw" data-k="safah">lengua</span> de <span class="kw" data-k="kol">toda la tierra</span>, y <span class="kw" data-k="sham">desde allí</span> el SEÑOR los <span class="kw" data-k="puts">dispersó</span> sobre la faz de <span class="kw" data-k="kol">toda la tierra</span>.</p>
+        <p class="he" lang="he">עַל־כֵּן קָרָא <span class="kw" data-k="shem">שְׁמָהּ</span> בָּבֶל כִּי־<span class="kw" data-k="sham">שָׁם</span> בָּלַל יְהוָה <span class="kw" data-k="safah">שְׂפַת</span> <span class="kw" data-k="kol">כָּל־הָאָרֶץ</span> <span class="kw" data-k="sham">וּמִשָּׁם</span> <span class="kw" data-k="puts">הֱפִיצָם</span> יְהוָה עַל־פְּנֵי <span class="kw" data-k="kol">כָּל־הָאָרֶץ</span>׃</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="sound.eyebrow">Babel · wordplay</p>
+    <h2 data-i18n="sound.h2">Mirrors in the sound</h2>
+    <p class="intro" data-i18n="sound.intro">Some of the symmetry only exists in Hebrew. The narrator picks words whose letters and sounds answer each other.</p>
+
+    <div class="cards">
+      <article class="card wide">
+        <h3 data-i18n="letters.h">Their bricks, reversed</h3>
+        <p data-i18n="letters.p">The builders say <span class="tr">nilbenah</span>, “let us make bricks”, from the letters L‑B‑N. God answers <span class="tr">navlah</span>, “let us confuse”, from N‑B‑L. Same three letters, in reverse order. Hebrew reads right to left.</p>
+        <div class="letters" id="letters">
+          <div class="lword nilbenah right">
+            <span class="he" lang="he">נִלְבְּנָה</span>
+            <span class="tr">nilbenah</span>
+            <span data-i18n="letters.nil">“let us make bricks” · v.3</span>
+          </div>
+          <div class="tiles" aria-hidden="true">
+            <div class="tile" data-l="l" style="--pos:0"><span class="hl">ל</span><span class="ll">L</span></div>
+            <div class="tile" data-l="b" style="--pos:1"><span class="hl">ב</span><span class="ll">B</span></div>
+            <div class="tile" data-l="n" style="--pos:2"><span class="hl">נ</span><span class="ll">N</span></div>
+          </div>
+          <div class="lword navlah">
+            <span class="he" lang="he">נָבְלָה</span>
+            <span class="tr">navlah</span>
+            <span data-i18n="letters.nav">“let us confuse” · v.7</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button class="btn" id="reverse" type="button" aria-pressed="false">Reverse the letters</button>
+          <p class="caption" id="lettersCaption" aria-live="polite">Showing L‑B‑N: the builders' bricks.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3 data-i18n="c2.h">Name, there, heaven</h3>
+        <ul class="wordlist">
+          <li><span class="he" lang="he">שֵׁם</span><span class="gloss"><span class="tr">shem</span> · <span data-i18n="g.name">name</span><small>v.4, v.9</small></span></li>
+          <li><span class="he" lang="he">שָׁם</span><span class="gloss"><span class="tr">sham</span> · <span data-i18n="g.there">there</span><small>vv.2, 7, 8, 9</small></span></li>
+          <li><span class="he" lang="he">שָׁמַיִם</span><span class="gloss"><span class="tr">shamayim</span> · <span data-i18n="g.heavens">heavens</span><small>v.4</small></span></li>
+        </ul>
+        <p data-i18n="c2.p">They want a <em>name</em>, by building into the <em>heavens</em>, and it all falls apart <em>there</em>.</p>
+      </article>
+
+      <article class="card">
+        <h3 data-i18n="c3.h">Babel and confusion</h3>
+        <ul class="wordlist">
+          <li><span class="he" lang="he">בָּבֶל</span><span class="gloss"><span class="tr">Bavel</span> · <span data-i18n="g.babylon">Babylon</span><small>v.9</small></span></li>
+          <li><span class="he" lang="he">בָּלַל</span><span class="gloss"><span class="tr">balal</span> · <span data-i18n="g.confuse">to confuse</span><small>v.9</small></span></li>
+        </ul>
+        <p data-i18n="c3.p">In Babylonian the name meant <span class="tr">Bab‑ili</span>, “gate of the gods”. Genesis explains it with <span class="tr">balal</span>, so the city's proudest boast becomes a pun on confusion.</p>
+      </article>
+
+      <article class="card">
+        <h3 data-i18n="c4.h">Bitumen for mortar</h3>
+        <ul class="wordlist">
+          <li><span class="he" lang="he">חֵמָר</span><span class="gloss"><span class="tr">chemar</span> · <span data-i18n="g.bitumen">bitumen</span><small>v.3</small></span></li>
+          <li><span class="he" lang="he">חֹמֶר</span><span class="gloss"><span class="tr">chomer</span> · <span data-i18n="g.mortar">mortar</span><small>v.3</small></span></li>
+        </ul>
+        <p data-i18n="c4.p">Even the building materials rhyme: <span class="tr">vehachemar hayah lahem lachomer</span>, “bitumen served them as mortar”.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="echo.eyebrow">Babel · measure for measure</p>
+    <h2 data-i18n="echo.h2">Echoes across the story</h2>
+    <p class="intro" data-i18n="echo.intro">Two of the builders' own phrases come back later, fulfilled in a way they never intended.</p>
+
+    <div class="echoes">
+      <article class="card">
+        <h3 data-i18n="e1.h">Their fear comes true</h3>
+        <div class="quote">
+          <span class="ref" data-i18n="ref.v4">v.4 · the builders</span>
+          <span class="he" lang="he">פֶּן־<mark>נָפוּץ</mark> <span class="same">עַל־פְּנֵי כָל־הָאָרֶץ</span></span>
+          <span class="tx" data-i18n="e1.q1">“…lest we be <mark>scattered</mark> <span class="same">over the face of the whole earth</span>.”</span>
+        </div>
+        <span class="arrow" data-i18n="e1.arrow">↓ four verses later</span>
+        <div class="quote">
+          <span class="ref" data-i18n="ref.v8">v.8 · the narrator</span>
+          <span class="he" lang="he"><mark>וַיָּפֶץ</mark> יְהוָה אֹתָם מִשָּׁם <span class="same">עַל־פְּנֵי כָל־הָאָרֶץ</span></span>
+          <span class="tx" data-i18n="e1.q2">“So the LORD <mark>scattered</mark> them from there <span class="same">over the face of the whole earth</span>.”</span>
+        </div>
+        <p data-i18n="e1.p">The tower was built to prevent this, and the narrator describes the outcome in the builders' own words. The rabbis called this <span class="tr">midah keneged midah</span>, measure for measure.</p>
+      </article>
+
+      <article class="card">
+        <h3 data-i18n="e2.h">They get a name</h3>
+        <div class="quote">
+          <span class="ref" data-i18n="ref.v4">v.4 · the builders</span>
+          <span class="he" lang="he">וְנַעֲשֶׂה־לָּנוּ <mark>שֵׁם</mark></span>
+          <span class="tx" data-i18n="e2.q1">“Let us make a <mark>name</mark> for ourselves.”</span>
+        </div>
+        <span class="arrow" data-i18n="e2.arrow">↓ the last verse</span>
+        <div class="quote">
+          <span class="ref" data-i18n="ref.v9">v.9 · the narrator</span>
+          <span class="he" lang="he">עַל־כֵּן קָרָא <mark>שְׁמָהּ</mark> בָּבֶל</span>
+          <span class="tx" data-i18n="e2.q2">“Therefore its <mark>name</mark> was called Babel.”</span>
+        </div>
+        <p data-i18n="e2.p">They wanted fame and the city is remembered as “Confusion”. The next passage is the family line of Shem, whose name means “name”, leading to Abraham, who hears: “I will make your name great” (12:2).</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="par.eyebrow">Babel · a second layer</p>
+    <h2 data-i18n="par.h2">Two patterns at once</h2>
+    <p class="intro" data-i18n="par.intro">Read straight through, the two halves also run in parallel. The builders act in vv. 1–4, and God answers point for point in vv. 6–9. The story mirrors itself and repeats itself at the same time.</p>
+    <div class="table-wrap">
+      <table class="ptable">
+        <thead>
+          <tr><th scope="col" data-i18n="par.th1">The builders · vv. 1–4</th><th scope="col" data-i18n="par.th2">God's answer · vv. 6–9</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span data-i18n="p1l">One people, one language</span><span class="r">v.1</span></td><td><span data-i18n="p1r">“They are one people, one language”</span><span class="r">v.6</span></td></tr>
+          <tr><td><span data-i18n="p2l">“Come, let us make bricks”</span><span class="r">v.3</span></td><td><span data-i18n="p2r">“Come, let us go down and confuse”</span><span class="r">v.7</span></td></tr>
+          <tr><td><span data-i18n="p3l">Let us build a city</span><span class="r">v.4</span></td><td><span data-i18n="p3r">They stopped building the city</span><span class="r">v.8</span></td></tr>
+          <tr><td><span data-i18n="p4l">Let us make a name</span><span class="r">v.4</span></td><td><span data-i18n="p4r">Its name was called Babel</span><span class="r">v.9</span></td></tr>
+          <tr><td><span data-i18n="p5l">Lest we be scattered</span><span class="r">v.4</span></td><td><span data-i18n="p5r">The LORD scattered them</span><span class="r">vv.8–9</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p data-i18n="f1">Flood structure after Gordon Wenham, “The Coherence of the Flood Narrative”, <em>Vetus Testamentum</em> 28 (1978), with the scenes simplified and fitted to 6:9–9:17.</p>
+    <p data-i18n="f2">Babel structure after J. P. Fokkelman, <em>Narrative Art in Genesis</em> (1975), and Gordon Wenham, <em>Genesis 1–15</em> (Word Biblical Commentary, 1987), simplified. Scholars draw some of the lines differently.</p>
+    <p data-i18n="f3">Hebrew: the Masoretic Text. English: a fairly literal translation made for this page.</p>
+  </div>
+</footer>
+
+<script>
+  const ES = {
+    "brand": "Espejos del Génesis",
+    "hero.eyebrow": "Quiasmos en el Génesis",
+    "hero.h1": "Espejos del Génesis",
+    "hero.lede": "Dos relatos del Génesis están construidos como espejos. La segunda mitad vuelve a contar la primera en orden inverso, y el punto de giro está justo en el centro. En ambos relatos, ese centro es una acción de Dios.",
+    "nav.aria": "Relatos en esta página",
+    "nav.flood": "El Diluvio · Génesis 6–9",
+    "nav.babel": "La Torre de Babel · Génesis 11",
+    "flood.eyebrow": "Génesis 6:9–9:17 · 77 versículos",
+    "flood.h2": "El Diluvio",
+    "flood.intro": "El relato del Diluvio va desde su encabezado, «Estas son las generaciones de Noé» (6:9), hasta el final del discurso de Dios sobre el pacto (9:17). Si se cuentan los versículos, el punto de giro, «Dios se acordó de Noé» (8:1), cae exactamente en el medio.",
+    "eq.aria": "38 versículos, más 1, más 38 versículos, suman 77 versículos",
+    "eq.l": "versículos · 6:9–7:24 · las aguas suben",
+    "eq.c": "8:1 · Dios se acordó de Noé",
+    "eq.r": "versículos · 8:2–9:17 · las aguas bajan",
+    "eq.sum": "versículos en total",
+    "svg.aria": "Diagrama de arcos de Génesis 6:9 a 9:17. 77 cuadros, uno por versículo: 38 antes de 8:1 y 38 después. Ocho arcos unen las escenas que se reflejan entre sí.",
+    "flood.hint": "← Desliza el diagrama hacia los lados →",
+    "flood.caption": "Cada cuadro es un versículo. Los arcos unen las escenas que se reflejan entre sí, anidados como el arcoíris que cierra el relato. Elige un par para seguirlo.",
+    "flood.sub": "También los números se reflejan",
+    "flood.subintro": "Los números de días de la subida vuelven en orden inverso en la bajada.",
+    "note1.h": "El centro",
+    "note1.p": "En hebreo, «acordarse» significa actuar a favor de alguien. Justo después de 8:1 pasa un viento sobre la tierra y las aguas empiezan a bajar, un eco del espíritu sobre las aguas en Génesis 1:2. Antes de este versículo el mundo se deshace. Después, la creación vuelve a empezar: tierra seca, aves y animales, y la bendición «fructificad y multiplicaos» (9:1).",
+    "note2.h": "¿Qué tan exacto es el recuento?",
+    "note2.p": "La división en versículos viene de los masoretas, los escribas que fijaron el texto hebreo, y los números se añadieron en la Edad Media. Así que la división 38 + 1 + 38 puede reflejar cómo se dividió el texto más que la intención del autor original. Las escenas se reflejan de todos modos. El esquema del propio Wenham está enmarcado por los hijos de Noé (6:10 y 9:18–19), un poco más amplio que este recuento, y los límites de las escenas aquí están simplificados para encajar en los 77 versículos. El Génesis ya conoce el número: Lamec se jacta de una venganza «setenta y siete veces» mayor (4:24).",
+    "babel.eyebrow": "Génesis 11:1–9 · un quiasmo en nueve versículos",
+    "babel.h2": "La Torre de Babel",
+    "babel.lede": "El relato de la Torre de Babel está construido como un espejo. La primera mitad es el plan de los constructores, paso a paso. La segunda mitad lo deshace en orden inverso. Justo en el centro, el SEÑOR desciende. Toca un ladrillo para comparar las dos mitades de un par, o reproduce el relato para verlo subir y deshacerse.",
+    "zig.aria": "El relato como un zigurat: la mitad de los constructores a la izquierda, la de Dios a la derecha",
+    "zig.heaven": "los cielos",
+    "legend.l": "vv. 1–4 · los constructores suben",
+    "legend.r": "vv. 5–9 · Dios lo deshace",
+    "play": "Reproducir el relato",
+    "caption": "Lee hacia arriba por la izquierda y luego hacia abajo por la derecha.",
+    "text.eyebrow": "Babel · el texto",
+    "text.h2": "Léelo en el espejo",
+    "text.intro": "Nueve versículos en hebreo y en español. Unas pocas palabras vuelven una y otra vez, y caen en lugares equivalentes a cada lado del centro. Elige una palabra para resaltarla en los dos idiomas.",
+    "grid.key": "Palabra clave",
+    "turn": "El giro · empieza la mitad de Dios",
+    "sound.eyebrow": "Babel · juegos de palabras",
+    "sound.h2": "Espejos en el sonido",
+    "sound.intro": "Parte de la simetría solo existe en hebreo. El narrador elige palabras cuyas letras y sonidos se responden entre sí.",
+    "letters.h": "Sus ladrillos, al revés",
+    "letters.p": "Los constructores dicen <span class=\"tr\">nilbenah</span>, «hagamos ladrillos», con las letras L‑B‑N. Dios responde <span class=\"tr\">navlah</span>, «confundamos», con N‑B‑L. Las mismas tres letras, en orden inverso. El hebreo se lee de derecha a izquierda.",
+    "letters.nil": "«hagamos ladrillos» · v.3",
+    "letters.nav": "«confundamos» · v.7",
+    "c2.h": "Nombre, allí, cielo",
+    "g.name": "nombre",
+    "g.there": "allí",
+    "g.heavens": "cielos",
+    "c2.p": "Quieren un <em>nombre</em>, construyendo hasta los <em>cielos</em>, y todo se deshace <em>allí</em>.",
+    "c3.h": "Babel y confusión",
+    "g.babylon": "Babilonia",
+    "g.confuse": "confundir",
+    "c3.p": "En babilonio el nombre significaba <span class=\"tr\">Bab‑ili</span>, «puerta de los dioses». El Génesis lo explica con <span class=\"tr\">balal</span>, así que el mayor orgullo de la ciudad se convierte en un juego de palabras sobre la confusión.",
+    "c4.h": "Betún por argamasa",
+    "g.bitumen": "betún",
+    "g.mortar": "argamasa",
+    "c4.p": "Hasta los materiales riman: <span class=\"tr\">vehachemar hayah lahem lachomer</span>, «el betún les sirvió de argamasa».",
+    "echo.eyebrow": "Babel · medida por medida",
+    "echo.h2": "Ecos a lo largo del relato",
+    "echo.intro": "Dos frases de los propios constructores vuelven más adelante, cumplidas de una forma que nunca pretendieron.",
+    "e1.h": "Su temor se cumple",
+    "ref.v4": "v.4 · los constructores",
+    "ref.v8": "v.8 · el narrador",
+    "ref.v9": "v.9 · el narrador",
+    "e1.q1": "«…no sea que seamos <mark>dispersados</mark> <span class=\"same\">sobre la faz de toda la tierra</span>».",
+    "e1.arrow": "↓ cuatro versículos después",
+    "e1.q2": "«Así el SEÑOR los <mark>dispersó</mark> desde allí <span class=\"same\">sobre la faz de toda la tierra</span>».",
+    "e1.p": "La torre se construyó para evitar esto, y el narrador describe el resultado con las mismas palabras de los constructores. Los rabinos lo llamaron <span class=\"tr\">midah keneged midah</span>, medida por medida.",
+    "e2.h": "Obtienen un nombre",
+    "e2.q1": "«Hagámonos un <mark>nombre</mark>».",
+    "e2.arrow": "↓ el último versículo",
+    "e2.q2": "«Por eso le pusieron por <mark>nombre</mark> Babel».",
+    "e2.p": "Querían fama, y la ciudad se recuerda como «Confusión». El pasaje siguiente es la genealogía de Sem, cuyo nombre significa «nombre», y lleva hasta Abraham, que oye: «Engrandeceré tu nombre» (12:2).",
+    "par.eyebrow": "Babel · una segunda capa",
+    "par.h2": "Dos patrones a la vez",
+    "par.intro": "Leídas de corrido, las dos mitades también avanzan en paralelo. Los constructores actúan en los vv. 1–4, y Dios responde punto por punto en los vv. 6–9. El relato se refleja y se repite al mismo tiempo.",
+    "par.th1": "Los constructores · vv. 1–4",
+    "par.th2": "La respuesta de Dios · vv. 6–9",
+    "p1l": "Un pueblo, una lengua",
+    "p1r": "«Son un solo pueblo, una sola lengua»",
+    "p2l": "«Vamos, hagamos ladrillos»",
+    "p2r": "«Vamos, descendamos y confundamos»",
+    "p3l": "Edifiquemos una ciudad",
+    "p3r": "Dejaron de edificar la ciudad",
+    "p4l": "Hagámonos un nombre",
+    "p4r": "Le pusieron por nombre Babel",
+    "p5l": "No sea que seamos dispersados",
+    "p5r": "El SEÑOR los dispersó",
+    "f1": "Estructura del Diluvio según Gordon Wenham, «The Coherence of the Flood Narrative», <em>Vetus Testamentum</em> 28 (1978), con las escenas simplificadas y ajustadas a 6:9–9:17.",
+    "f2": "Estructura de Babel según J. P. Fokkelman, <em>Narrative Art in Genesis</em> (1975), y Gordon Wenham, <em>Genesis 1–15</em> (Word Biblical Commentary, 1987), simplificada. Algunos especialistas trazan ciertas líneas de otra manera.",
+    "f3": "Hebreo: el Texto Masorético. Español: una traducción bastante literal hecha para esta página.",
+  };
+
+  const UI = {
+    builders: { en: "Builders", es: "Constructores" },
+    answer: { en: "God's answer", es: "Respuesta de Dios" },
+    centre: { en: "The centre", es: "El centro" },
+    done: { en: "Back where it started: one language for the whole earth, now confused.", es: "De vuelta al principio: una sola lengua para toda la tierra, ahora confundida." },
+    reduced: { en: "Up the left side from v.1 to v.4, the turn at v.5, then down the right side to v.9.", es: "Sube por la izquierda del v.1 al v.4, gira en el v.5 y baja por la derecha hasta el v.9." },
+    reverse: { en: "Reverse the letters", es: "Invertir las letras" },
+    back: { en: "Back to the bricks", es: "Volver a los ladrillos" },
+    lbn: { en: "Showing L‑B‑N: the builders' bricks.", es: "Mostrando L‑B‑N: los ladrillos de los constructores." },
+    nbl: { en: "Showing N‑B‑L: God's confusion.", es: "Mostrando N‑B‑L: la confusión de Dios." },
+    verse: { en: "verse", es: "versículo" },
+    verses: { en: "verses", es: "versículos" },
+    genesis: { en: "Genesis", es: "Génesis" },
+    and: { en: "and", es: "y" },
+    remembered: { en: "“God remembered Noah”", es: "«Dios se acordó de Noé»" },
+    centreRef: { en: "8:1 · verse 39 of 77", es: "8:1 · versículo 39 de 77" },
+  };
+
+  const TIERS = [
+    {
+      id: "A",
+      h: { ref: "v.1", heb: "כָל־הָאָרֶץ שָׂפָה אֶחָת", tr: "kol ha'arets safah echat",
+        short: { en: "one language", es: "una sola lengua" },
+        tx: { en: "The whole earth had one language", es: "Toda la tierra tenía una sola lengua" } },
+      d: { ref: "v.9", heb: "שְׂפַת כָּל־הָאָרֶץ", tr: "sefat kol ha'arets",
+        short: { en: "the language of all the earth", es: "la lengua de toda la tierra" },
+        tx: { en: "the LORD confused the language of the whole earth", es: "el SEÑOR confundió la lengua de toda la tierra" } },
+      note: {
+        en: "The story opens and closes on the same pair of words, \"language\" and \"the whole earth\". At the start they describe unity. At the end the same words describe confusion.",
+        es: "El relato abre y cierra con el mismo par de palabras, «lengua» y «toda la tierra». Al principio describen unidad. Al final, las mismas palabras describen confusión.",
+      },
+    },
+    {
+      id: "B",
+      h: { ref: "v.2", heb: "וַיֵּשְׁבוּ שָׁם", tr: "vayeshvu sham",
+        short: { en: "settled there", es: "se establecieron allí" },
+        tx: { en: "they settled there", es: "se establecieron allí" } },
+      d: { ref: "v.8", heb: "וַיָּפֶץ יְהוָה אֹתָם מִשָּׁם", tr: "vayafets YHWH otam misham",
+        short: { en: "scattered from there", es: "dispersados desde allí" },
+        tx: { en: "the LORD scattered them from there", es: "el SEÑOR los dispersó desde allí" } },
+      note: {
+        en: "Settling becomes scattering, and the small word \"there\" (sham) carries both. It comes back five times in nine verses.",
+        es: "Establecerse se convierte en dispersarse, y la pequeña palabra «allí» (sham) lleva las dos cosas. Vuelve cinco veces en nueve versículos.",
+      },
+    },
+    {
+      id: "C",
+      h: { ref: "v.3", heb: "אִישׁ אֶל־רֵעֵהוּ", tr: "ish el re'ehu",
+        short: { en: "said to one another", es: "se dijeron unos a otros" },
+        tx: { en: "they said to one another", es: "se dijeron unos a otros" } },
+      d: { ref: "v.7", heb: "אִישׁ שְׂפַת רֵעֵהוּ", tr: "ish sefat re'ehu",
+        short: { en: "can't understand one another", es: "no se entienden unos a otros" },
+        tx: { en: "so that they will not understand one another's language", es: "para que ninguno entienda la lengua de su compañero" } },
+      note: {
+        en: "The same idiom both times, literally \"a man to his neighbour\". First they talk easily and make plans together. Afterwards they can no longer understand each other.",
+        es: "El mismo modismo las dos veces, literalmente «un hombre a su prójimo». Primero hablan con facilidad y hacen planes juntos. Después ya no pueden entenderse.",
+      },
+    },
+    {
+      id: "D",
+      h: { ref: "v.3", heb: "הָבָה נִלְבְּנָה לְבֵנִים", tr: "havah nilbenah levenim",
+        short: { en: "“let us make bricks”", es: "«hagamos ladrillos»" },
+        tx: { en: "“Come, let us make bricks”", es: "«Vamos, hagamos ladrillos»" } },
+      d: { ref: "v.7", heb: "הָבָה נֵרְדָה וְנָבְלָה", tr: "havah nerdah venavlah",
+        short: { en: "“let us confuse”", es: "«confundamos»" },
+        tx: { en: "“Come, let us go down and confuse”", es: "«Vamos, descendamos y confundamos»" } },
+      note: {
+        en: "God answers with the builders' own \"come, let us\". The verbs mirror each other too: nilbenah is built on the letters L-B-N, navlah on N-B-L, the same letters reversed.",
+        es: "Dios responde con el mismo «vamos» de los constructores. También los verbos se reflejan: nilbenah se forma con las letras L-B-N, navlah con N-B-L, las mismas letras al revés.",
+      },
+    },
+    {
+      id: "E",
+      h: { ref: "v.4", heb: "הָבָה נִבְנֶה־לָּנוּ", tr: "havah nivneh lanu",
+        short: { en: "“let us build”", es: "«edifiquemos»" },
+        tx: { en: "“Come, let us build ourselves”", es: "«Vamos, edifiquémonos»" } },
+      d: { ref: "v.5", heb: "אֲשֶׁר בָּנוּ בְּנֵי הָאָדָם", tr: "asher banu bnei ha'adam",
+        short: { en: "which humans had built", es: "que los humanos habían edificado" },
+        tx: { en: "which the children of man had built", es: "que habían edificado los hijos de los hombres" } },
+      note: {
+        en: "The builders call it their own achievement, \"for ourselves\". The narrator calls them \"children of adam\", a word tied to adamah, the ground. However high they build, they are earthbound.",
+        es: "Los constructores lo llaman su propio logro, «para nosotros». El narrador los llama «hijos de adam», palabra ligada a adamah, la tierra. Por alto que construyan, siguen siendo terrenales.",
+      },
+    },
+    {
+      id: "F",
+      h: { ref: "v.4", heb: "עִיר וּמִגְדָּל", tr: "ir umigdal",
+        short: { en: "a city and a tower", es: "una ciudad y una torre" },
+        tx: { en: "a city and a tower", es: "una ciudad y una torre" } },
+      d: { ref: "v.5", heb: "אֶת־הָעִיר וְאֶת־הַמִּגְדָּל", tr: "et ha'ir ve'et hamigdal",
+        short: { en: "the city and the tower", es: "la ciudad y la torre" },
+        tx: { en: "the city and the tower", es: "la ciudad y la torre" } },
+      note: {
+        en: "The project is named on both sides of the centre, once by the builders and once as God looks at it. Then the story turns.",
+        es: "El proyecto se nombra a ambos lados del centro, una vez por los constructores y otra cuando Dios lo mira. Entonces el relato gira.",
+      },
+    },
+  ];
+  const APEX = {
+    ref: "v.5",
+    heb: "וַיֵּרֶד יְהוָה לִרְאֹת",
+    tr: "vayered YHWH lir'ot",
+    short: { en: "The LORD came down to see", es: "El SEÑOR descendió para ver" },
+    tx: { en: "The LORD came down to see", es: "El SEÑOR descendió para ver" },
+    note: {
+      en: "The turning point. The builders wanted a tower \"with its top in the heavens\". God has to come down even to see it, and two verses later says \"let us go down\" again. Everything before this line goes up. Everything after it comes apart in reverse order.",
+      es: "El punto de giro. Los constructores querían una torre «cuya cúspide llegue a los cielos». Dios tiene que descender incluso para verla, y dos versículos después vuelve a decir «descendamos». Todo lo anterior a esta línea sube. Todo lo posterior se deshace en orden inverso.",
+    },
+  };
+  const KEYS = [
+    { k: "kol", he: "כָּל־הָאָרֶץ", tr: "kol ha'arets", gloss: { en: "the whole earth", es: "toda la tierra" } },
+    { k: "safah", he: "שָׂפָה", tr: "safah", gloss: { en: "language, lip", es: "lengua, labio" } },
+    { k: "sham", he: "שָׁם", tr: "sham", gloss: { en: "there", es: "allí" } },
+    { k: "havah", he: "הָבָה", tr: "havah", gloss: { en: "come, let us", es: "vamos" } },
+    { k: "banah", he: "בָּנָה", tr: "banah", gloss: { en: "build", es: "edificar" } },
+    { k: "ir", he: "עִיר", tr: "ir", gloss: { en: "city", es: "ciudad" } },
+    { k: "puts", he: "פּוּץ", tr: "puts", gloss: { en: "scatter", es: "dispersar" } },
+    { k: "shem", he: "שֵׁם", tr: "shem", gloss: { en: "name", es: "nombre" } },
+    { k: "yarad", he: "יָרַד", tr: "yarad", gloss: { en: "go down", es: "descender" } },
+  ];
+  const FLOOD_PAIRS = [
+    { id: "A", hue: 5, l: [[6, 9], [6, 17], { en: "Noah, the corrupt earth, “I will bring a flood”", es: "Noé, la tierra corrompida, «traeré un diluvio»" }], r: [[9, 11], [9, 17], { en: "“Never again a flood”, and the rainbow", es: "«Nunca más un diluvio», y el arcoíris" }] },
+    { id: "B", hue: 30, l: [[6, 18], [6, 20], { en: "“I will establish my covenant with you”", es: "«Estableceré mi pacto contigo»" }], r: [[9, 8], [9, 10], { en: "The covenant made with every living creature", es: "El pacto con todo ser viviente" }] },
+    { id: "C", hue: 50, l: [[6, 21], [6, 22], { en: "Food taken into the ark", es: "Alimento llevado al arca" }], r: [[8, 20], [9, 7], { en: "Sacrifice, blessing, food outside the ark", es: "Sacrificio, bendición, alimento fuera del arca" }] },
+    { id: "D", hue: 95, l: [[7, 1], [7, 3], { en: "“Go into the ark”", es: "«Entra en el arca»" }], r: [[8, 15], [8, 19], { en: "“Go out of the ark”", es: "«Sal del arca»" }] },
+    { id: "E", hue: 160, l: [[7, 4], [7, 10], { en: "Seven days of waiting", es: "Siete días de espera" }], r: [[8, 10], [8, 14], { en: "Seven days, and seven more", es: "Siete días, y siete más" }] },
+    { id: "F", hue: 200, l: [[7, 11], [7, 16], { en: "They go in and the LORD shuts the door", es: "Entran y el SEÑOR cierra la puerta" }], r: [[8, 6], [8, 9], { en: "Noah opens the window, raven and dove go out", es: "Noé abre la ventana, salen el cuervo y la paloma" }] },
+    { id: "G", hue: 232, l: [[7, 17], [7, 20], { en: "The waters rise over the mountains", es: "Las aguas cubren los montes" }], r: [[8, 4], [8, 5], { en: "The ark rests, the mountaintops reappear", es: "El arca se posa, reaparecen las cumbres" }] },
+    { id: "H", hue: 270, l: [[7, 21], [7, 24], { en: "The waters prevail 150 days", es: "Las aguas prevalecen 150 días" }], r: [[8, 2], [8, 3], { en: "The waters recede after 150 days", es: "Las aguas bajan después de 150 días" }] },
+  ];
+
+  const LANG_KEY = "genesis-mirrors-lang";
+  let lang = "en";
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    lang = saved === "es" || saved === "en" ? saved : (navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en";
+  } catch {
+    lang = (navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en";
+  }
+  const t = (value) => (typeof value === "string" ? value : value[lang]);
+
+  function el(tag, cls, text) {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function hebrew(text, cls) {
+    const node = el("span", "he" + (cls ? " " + cls : ""), text);
+    node.lang = "he";
+    return node;
+  }
+
+  // ---------- Static text ----------
+  const originalHtml = new Map();
+  const originalAria = new Map();
+  document.querySelectorAll("[data-i18n]").forEach((n) => originalHtml.set(n, n.innerHTML));
+  document.querySelectorAll("[data-i18n-aria]").forEach((n) => originalAria.set(n, n.getAttribute("aria-label")));
+  function applyStatic() {
+    originalHtml.forEach((html, n) => {
+      n.innerHTML = lang === "es" ? ES[n.dataset.i18n] ?? html : html;
+    });
+    originalAria.forEach((label, n) => {
+      n.setAttribute("aria-label", lang === "es" ? ES[n.dataset.i18nAria] ?? label : label);
+    });
+  }
+
+  // ---------- Ziggurat ----------
+  const zig = document.getElementById("zig");
+  const heaven = document.getElementById("heaven");
+  const detail = document.getElementById("detail");
+  const caption = document.getElementById("caption");
+  let bricks = {};
+  let selectedTier = "apex";
+
+  function makeBrick(side, id, data, letter) {
+    const b = el("button", "brick " + side);
+    b.type = "button";
+    b.dataset.id = id;
+    b.setAttribute("aria-pressed", String(id === selectedTier));
+    b.append(el("span", "tag", letter + " · " + data.ref), el("span", "lbl", t(data.short)));
+    b.addEventListener("click", () => select(id));
+    bricks[side + id] = b;
+    return b;
+  }
+
+  function renderZig() {
+    bricks = {};
+    const apexTier = el("div", "tier apex-tier");
+    apexTier.append(makeBrick("apex", "apex", APEX, "★"));
+    const tiers = [...TIERS].reverse().map((tier, i) => {
+      const row = el("div", "tier");
+      row.style.setProperty("--i", String(i));
+      row.append(makeBrick("h", tier.id, tier.h, tier.id), makeBrick("d", tier.id, tier.d, tier.id + "′"));
+      return row;
+    });
+    zig.replaceChildren(heaven, apexTier, ...tiers);
+  }
+
+  function half(label, sideClass, data) {
+    const box = el("div", "half");
+    const who = el("span", "who");
+    who.append(el("i", "sw " + sideClass), document.createTextNode(label + " · " + data.ref));
+    box.append(who, hebrew(data.heb), el("span", "tr", data.tr), el("span", "tx", t(data.tx)));
+    return box;
+  }
+
+  function select(id) {
+    selectedTier = id;
+    Object.values(bricks).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+    const pair = el("div", "pair");
+    let note;
+    if (id === "apex") {
+      pair.classList.add("single");
+      pair.append(half(t(UI.centre), "a", APEX));
+      note = APEX.note;
+    } else {
+      const tier = TIERS.find((x) => x.id === id);
+      pair.append(half(t(UI.builders) + " " + tier.id, "h", tier.h), half(t(UI.answer) + " " + tier.id + "′", "d", tier.d));
+      note = tier.note;
+    }
+    detail.replaceChildren(pair, el("p", "note", t(note)));
+  }
+
+  // ---------- Play ----------
+  const playBtn = document.getElementById("play");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STEP_MS = 650;
+  let timers = [];
+
+  function stopPlay() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    zig.classList.remove("playing");
+    Object.values(bricks).forEach((b) => b.classList.remove("lit"));
+  }
+
+  playBtn.addEventListener("click", () => {
+    stopPlay();
+    if (reduceMotion) {
+      caption.textContent = t(UI.reduced);
+      return;
+    }
+    const sequence = [
+      ...TIERS.map((tier) => ({ key: "h" + tier.id, text: tier.h.ref + " · " + t(tier.h.tx) })),
+      { key: "apexapex", text: APEX.ref + " · " + t(APEX.tx) },
+      ...[...TIERS].reverse().map((tier) => ({ key: "d" + tier.id, text: tier.d.ref + " · " + t(tier.d.tx) })),
+    ];
+    zig.classList.add("playing");
+    sequence.forEach((step, i) => {
+      timers.push(setTimeout(() => {
+        bricks[step.key].classList.add("lit");
+        caption.textContent = step.text;
+      }, i * STEP_MS + (i > TIERS.length ? STEP_MS : 0)));
+    });
+    timers.push(setTimeout(() => {
+      stopPlay();
+      caption.textContent = t(UI.done);
+    }, sequence.length * STEP_MS + STEP_MS * 2));
+  });
+
+  // ---------- Keyword grid ----------
+  const tbody = document.querySelector("#kgrid tbody");
+  let rows = {};
+  let activeKey = "safah";
+
+  function renderGrid() {
+    rows = {};
+    tbody.replaceChildren();
+    KEYS.forEach((key) => {
+      const tr = el("tr");
+      const th = el("th");
+      th.scope = "row";
+      const btn = el("button", "krow");
+      btn.type = "button";
+      btn.append(hebrew(key.he), el("span", "kt", key.tr), el("span", "ke", t(key.gloss)));
+      btn.addEventListener("click", () => selectKey(key.k));
+      th.append(btn);
+      tr.append(th);
+      let total = 0;
+      for (let v = 1; v <= 9; v++) {
+        const count = document.querySelectorAll("#v" + v + ' .he .kw[data-k="' + key.k + '"]').length;
+        total += count;
+        const td = el("td", "cell " + (v <= 4 ? "h" : "d") + (v === 5 ? " turn" : ""));
+        if (count) {
+          const dots = el("span", "dots");
+          dots.setAttribute("aria-label", count + "×");
+          for (let c = 0; c < count; c++) dots.append(el("i", "dot"));
+          td.append(dots);
+        }
+        tr.append(td);
+      }
+      tr.append(el("td", "total", total + "×"));
+      tbody.append(tr);
+      rows[key.k] = { tr, btn };
+    });
+    applyKey();
+  }
+
+  function applyKey() {
+    document.querySelectorAll(".kw").forEach((s) => s.classList.toggle("on", s.dataset.k === activeKey));
+    Object.entries(rows).forEach(([key, r]) => {
+      r.tr.classList.toggle("on", key === activeKey);
+      r.btn.setAttribute("aria-pressed", String(key === activeKey));
+    });
+  }
+  function selectKey(k) {
+    activeKey = activeKey === k ? null : k;
+    applyKey();
+  }
+  document.querySelectorAll(".verses .kw").forEach((s) => s.addEventListener("click", () => selectKey(s.dataset.k)));
+
+  // ---------- Letter reversal ----------
+  const letters = document.getElementById("letters");
+  const reverseBtn = document.getElementById("reverse");
+  const lettersCaption = document.getElementById("lettersCaption");
+  const tiles = { l: letters.querySelector('[data-l="l"]'), n: letters.querySelector('[data-l="n"]') };
+  let reversed = false;
+
+  function renderLetters() {
+    letters.classList.toggle("rev", reversed);
+    tiles.l.style.setProperty("--pos", reversed ? "2" : "0");
+    tiles.n.style.setProperty("--pos", reversed ? "0" : "2");
+    reverseBtn.textContent = t(reversed ? UI.back : UI.reverse);
+    reverseBtn.setAttribute("aria-pressed", String(reversed));
+    lettersCaption.textContent = t(reversed ? UI.nbl : UI.lbn);
+  }
+  reverseBtn.addEventListener("click", () => {
+    reversed = !reversed;
+    renderLetters();
+  });
+
+  // ---------- Flood arc diagram ----------
+  const FLOOD_VERSES = 77;
+  const FLOOD_CENTRE = 38;
+  const CHAPTER_OFFSET = { 6: -9, 7: 13, 8: 37, 9: 59 };
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const SVG_W = 800;
+  const SVG_PAD = 10;
+  const CELL_W = (SVG_W - 2 * SVG_PAD) / FLOOD_VERSES;
+  const STRIP_Y = 280;
+  const CELL_H = 22;
+  const ARC_RISE = 0.53;
+
+  const verseIndex = ([ch, v]) => CHAPTER_OFFSET[ch] + v;
+  function refOf(i) {
+    const ch = [9, 8, 7, 6].find((c) => i - CHAPTER_OFFSET[c] >= 1);
+    return ch + ":" + (i - CHAPTER_OFFSET[ch]);
+  }
+  function rangeLabel([from, to]) {
+    return from[0] === to[0] ? from[0] + ":" + from[1] + "–" + to[1] : from.join(":") + "–" + to.join(":");
+  }
+  const cellX = (i) => SVG_PAD + i * CELL_W;
+  function svgEl(tag, attrs, text) {
+    const node = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, String(v)));
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  const floodSvg = document.getElementById("floodSvg");
+  const pairsBox = document.getElementById("floodPairs");
+  let floodRows = {};
+  let activePair = null;
+
+  function renderFloodSvg() {
+    floodSvg.replaceChildren();
+    for (let i = 0; i < FLOOD_VERSES; i++) {
+      const cls = i < FLOOD_CENTRE ? "cellh" : i === FLOOD_CENTRE ? "cella" : "celld";
+      const cell = svgEl("rect", { x: cellX(i) + 0.6, y: STRIP_Y, width: CELL_W - 1.2, height: CELL_H, rx: 1, class: cls });
+      cell.append(svgEl("title", {}, t(UI.genesis) + " " + refOf(i)));
+      floodSvg.append(cell);
+    }
+    FLOOD_PAIRS.forEach((p) => {
+      const [lf, lt] = [verseIndex(p.l[0]), verseIndex(p.l[1])];
+      const [rf, rt] = [verseIndex(p.r[0]), verseIndex(p.r[1])];
+      const style = "--h:" + p.hue;
+      [[lf, lt], [rf, rt]].forEach(([f, to]) => {
+        floodSvg.append(svgEl("rect", { x: cellX(f) + 1, y: STRIP_Y - 7, width: (to - f + 1) * CELL_W - 2, height: 4, class: "segbar", style, "data-p": p.id }));
+      });
+      const x1 = SVG_PAD + ((lf + lt + 1) / 2) * CELL_W;
+      const x2 = SVG_PAD + ((rf + rt + 1) / 2) * CELL_W;
+      const y = STRIP_Y - 9;
+      const rise = (x2 - x1) * ARC_RISE;
+      const d = `M ${x1} ${y} C ${x1} ${y - rise} ${x2} ${y - rise} ${x2} ${y}`;
+      floodSvg.append(svgEl("path", { d, class: "arc", style, "data-p": p.id }));
+      const hit = svgEl("path", { d, class: "arc-hit", "data-p": p.id });
+      hit.append(svgEl("title", {}, p.id + ": " + rangeLabel(p.l) + " " + t(UI.and) + " " + rangeLabel(p.r)));
+      hit.addEventListener("click", () => setFloodPair(p.id));
+      floodSvg.append(hit);
+    });
+    const labelY = STRIP_Y + CELL_H + 16;
+    [[0, "start"], [14, "middle"], [FLOOD_CENTRE, "middle"], [60, "middle"], [FLOOD_VERSES - 1, "end"]].forEach(([i, anchor]) => {
+      const x = anchor === "start" ? cellX(i) : anchor === "end" ? cellX(i + 1) : cellX(i) + CELL_W / 2;
+      floodSvg.append(svgEl("text", { x, y: labelY, "text-anchor": anchor, class: "svg-lbl" + (i === FLOOD_CENTRE ? " strong" : "") }, refOf(i)));
+    });
+    const bracketY = labelY + 16;
+    [[0, FLOOD_CENTRE - 1], [FLOOD_CENTRE + 1, FLOOD_VERSES - 1]].forEach(([f, to]) => {
+      const xa = cellX(f) + 1;
+      const xb = cellX(to + 1) - 1;
+      floodSvg.append(svgEl("path", { d: `M ${xa} ${bracketY - 6} V ${bracketY} H ${xb} V ${bracketY - 6}`, class: "bracket" }));
+      floodSvg.append(svgEl("text", { x: (xa + xb) / 2, y: bracketY + 18, "text-anchor": "middle", class: "svg-lbl strong" }, to - f + 1 + " " + t(UI.verses)));
+    });
+    floodSvg.append(svgEl("text", { x: cellX(FLOOD_CENTRE) + CELL_W / 2, y: bracketY + 18, "text-anchor": "middle", class: "svg-lbl strong" }, "1"));
+  }
+
+  function segment(side, range) {
+    const box = el("span", side);
+    const count = verseIndex(range[1]) - verseIndex(range[0]) + 1;
+    box.append(el("span", "seg-t", t(range[2])), el("span", "seg-r", rangeLabel(range) + " · " + count + " " + t(count === 1 ? UI.verse : UI.verses)));
+    return box;
+  }
+
+  function renderFloodPairs() {
+    floodRows = {};
+    pairsBox.replaceChildren();
+    FLOOD_PAIRS.forEach((p) => {
+      const row = el("button", "prow");
+      row.type = "button";
+      row.style.setProperty("--h", String(p.hue));
+      row.append(segment("pl", p.l), el("span", "pill", p.id), segment("pr", p.r));
+      row.addEventListener("click", () => setFloodPair(p.id));
+      pairsBox.append(row);
+      floodRows[p.id] = row;
+    });
+    const centreRow = el("div", "prow centre");
+    centreRow.append(el("span", "pill", "★"), hebrew("וַיִּזְכֹּר אֱלֹהִים אֶת־נֹחַ"), el("span", "seg-t", t(UI.remembered)), el("span", "seg-r", t(UI.centreRef)));
+    pairsBox.append(centreRow);
+  }
+
+  function applyFloodPair() {
+    floodSvg.classList.toggle("has-active", activePair !== null);
+    floodSvg.querySelectorAll("[data-p]").forEach((n) => n.classList.toggle("on", n.dataset.p === activePair));
+    Object.entries(floodRows).forEach(([k, row]) => row.setAttribute("aria-pressed", String(k === activePair)));
+  }
+  function setFloodPair(id) {
+    activePair = activePair === id ? null : id;
+    applyFloodPair();
+  }
+
+  // ---------- Language ----------
+  const langButtons = { en: document.getElementById("langEn"), es: document.getElementById("langEs") };
+  function setLang(next) {
+    lang = next;
+    document.documentElement.lang = next;
+    try {
+      localStorage.setItem(LANG_KEY, next);
+    } catch {
+      // Storage can be unavailable (private window, blocked site data); the toggle still works for this visit.
+    }
+    Object.entries(langButtons).forEach(([code, btn]) => btn.setAttribute("aria-pressed", String(code === next)));
+    stopPlay();
+    applyStatic();
+    renderZig();
+    select(selectedTier);
+    renderGrid();
+    renderLetters();
+    renderFloodSvg();
+    renderFloodPairs();
+    applyFloodPair();
+  }
+  langButtons.en.addEventListener("click", () => setLang("en"));
+  langButtons.es.addEventListener("click", () => setLang("es"));
+  setLang(lang);
+</script>
+</body>
+</html>
